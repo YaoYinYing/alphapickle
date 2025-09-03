@@ -25,7 +25,9 @@ class AlphaFoldMetaData:
         self.path = Path(path)
         self.fasta = fasta
         self.saving_filename = f"ranked_{ranking}" if ranking else self.path.stem
-        self.saving_pathname = str(self.path.parent)
+        self.output_dir = self.path.parent
+        # backwards compatibility; remove in future
+        self.saving_pathname = str(self.output_dir)
         self.pLDDT: np.ndarray | None = None
         self.PAE: np.ndarray | None = None
 
@@ -46,7 +48,7 @@ class AlphaFoldMetaData:
         plt.ylabel("Predicted LDDT", size=14, fontweight="bold", fontname="Helvetica")
         scale = plt.colorbar(shrink=0.5)
         scale.set_label(label="Predicted LDDT", size=12, fontweight="bold", fontname="Helvetica")
-        outfile = Path(self.saving_pathname) / f"{self.saving_filename}_pLDDT.png"
+        outfile = self.output_dir / f"{self.saving_filename}_pLDDT.png"
         plt.savefig(outfile, dpi=300)
         plt.close()
         return outfile
@@ -64,17 +66,19 @@ class AlphaFoldMetaData:
         plt.ylabel("Residue index", size=14, fontweight="bold", fontname="Helvetica")
         scale = plt.colorbar(im, shrink=0.5)
         scale.set_label(label="Predicted error (Å)", size=12, fontweight="bold", fontname="Helvetica")
-        outfile = Path(self.saving_pathname) / f"{self.saving_filename}_PAE.png"
+        outfile = self.output_dir / f"{self.saving_filename}_PAE.png"
         plt.savefig(outfile, dpi=300)
         plt.close()
-        pd.DataFrame(self.PAE).to_csv(Path(self.saving_pathname) / f"{self.saving_filename}_PAE.csv")
+        pd.DataFrame(self.PAE).to_csv(
+            self.output_dir / f"{self.saving_filename}_PAE.csv"
+        )
         return outfile
 
     def write_plddt_file(self) -> Path:
         """Write pLDDT values to CSV."""
         if self.pLDDT is None:
             raise ValueError("pLDDT data not loaded")
-        outfile = Path(self.saving_pathname) / f"{self.saving_filename}_pLDDT.csv"
+        outfile = self.output_dir / f"{self.saving_filename}_pLDDT.csv"
         pd.DataFrame({"pLDDT": self.pLDDT}).to_csv(outfile, index=False)
         return outfile
 
@@ -99,8 +103,10 @@ class AlphaFoldPickle(AlphaFoldMetaData):
                 except EOFError:
                     break
         self.data = data
-        self.PAE = np.asarray(data[0].get("predicted_aligned_error")) if data[0].get("predicted_aligned_error") is not None else None
-        self.pLDDT = np.asarray(data[0]["plddt"])
+        first = data[0]
+        pae = first.get("predicted_aligned_error")
+        self.PAE = np.asarray(pae) if pae is not None else None
+        self.pLDDT = np.asarray(first["plddt"])
 
 
 class AlphaFoldJson:
