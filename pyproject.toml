@@ -30,7 +30,7 @@ docs = [
 ]
 
 [project.scripts]
-alphapickle_af2 = "alphapickle.cli:af2"
+alphapickle_af2 = "alphapickle.cli:main"
 
 [tool.flit.sdist]
 exclude = [

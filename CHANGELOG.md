@@ -16,10 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Refactored project into `src/` layout and modern Python package.
 - Tests generate synthetic fixtures instead of using bundled examples.
-
 ### Fixed
 - Restored CLI banner, argument help, and copyright notice.
 
 ### Removed
 - Legacy bytecode and obsolete paths.
 - Large example output files from the repository; use external test data instead.
+- Deprecated `run_AlphaPickle.py` script; `alphapickle_af2` is now the sole CLI.
