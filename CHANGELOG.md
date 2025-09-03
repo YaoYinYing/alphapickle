@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial `pyproject.toml` packaging with flit.
 - Object-oriented inference runner.
 - Basic test suite and documentation scaffold.
+- Integration tests using external AlphaFold example dataset staged via fixtures.
 
 ### Changed
 - Refactored project into `src/` layout and modern Python package.
