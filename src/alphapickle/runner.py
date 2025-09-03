@@ -24,12 +24,14 @@ class AlphaPickleRunner:
         axis_label_increment: int = 100,
         n_jobs: int = 1,
     ) -> None:
+        """Configure default plotting options and threading behavior."""
         self.fasta_file = fasta_file
         self.plot_size = plot_size
         self.axis_label_increment = axis_label_increment
         self.n_jobs = n_jobs
 
     def process_pickle(self, pickle_file: str | Path, ranking: int | None = None) -> AlphaFoldPickle:
+        """Process a single AlphaFold pickle output file."""
         obj = AlphaFoldPickle(pickle_file, self.fasta_file, ranking=str(ranking) if ranking else None)
         obj.write_plddt_file()
         obj.plot_plddt(self.plot_size, self.axis_label_increment)
@@ -38,6 +40,7 @@ class AlphaPickleRunner:
         return obj
 
     def process_directory(self, directory: str | Path) -> list[AlphaFoldPickle]:
+        """Batch process all ranking results in a directory."""
         directory = Path(directory)
         rankings = AlphaFoldJson(directory).ranking
         def worker(item: tuple[int, str]) -> AlphaFoldPickle:
@@ -47,12 +50,14 @@ class AlphaPickleRunner:
         return Parallel(n_jobs=self.n_jobs)(delayed(worker)(item) for item in rankings)
 
     def process_pdb(self, pdb_file: str | Path) -> AlphaFoldPDB:
+        """Extract and plot pLDDT values from a PDB file."""
         obj = AlphaFoldPDB(pdb_file, self.fasta_file)
         obj.write_plddt_file()
         obj.plot_plddt(self.plot_size, self.axis_label_increment)
         return obj
 
     def process_pae_json(self, json_file: str | Path) -> AlphaFoldPAEJson:
+        """Plot PAE values from a ColabFold-style JSON file."""
         obj = AlphaFoldPAEJson(json_file)
         obj.plot_pae(self.plot_size, self.axis_label_increment)
         return obj

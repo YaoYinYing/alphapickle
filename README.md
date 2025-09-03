@@ -78,7 +78,7 @@ This collection of code will take any of the above output files and provide a .c
 
 # Install
 
-- How you install Python dependencies on your system is obviously up to you, but the relevant modules are listed in *requirements.txt files. Currently, this program has only been tested on OSX and Linux (if you test on Windows and find problems, please raise an issue). The module dependencies are subtly different between OS's, thanks to the long list of dependencies for matplotlib. Please make sure you select the *requirements.txt file relevant to your OS (either osx64_requirements.txt for MacOS or linux_requirements.txt for Linux distros). Consider installing the dependencies in a virtual environment to avoid potential version conflicts.
+- Dependencies are declared in ``pyproject.toml``. To install the project and its requirements, run ``pip install alphapickle`` or ``pip install .`` from a local clone. Consider using a virtual environment to avoid version conflicts.
  
 
 # Citation
