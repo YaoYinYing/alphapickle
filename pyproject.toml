@@ -29,6 +29,9 @@ docs = [
     "furo",
 ]
 
+[project.scripts]
+alphapickle_af2 = "alphapickle.cli:af2"
+
 [tool.flit.sdist]
 exclude = [
   "**/__pycache__/**",

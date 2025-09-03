@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Object-oriented inference runner.
 - Basic test suite and documentation scaffold.
 - Integration tests using external AlphaFold example dataset staged via fixtures.
+- Dedicated `alphapickle_af2` CLI for processing AlphaFold2 output directories.
 
 ### Changed
 - Refactored project into `src/` layout and modern Python package.
