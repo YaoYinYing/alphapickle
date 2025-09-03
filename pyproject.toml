@@ -1,0 +1,38 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "alphapickle"
+version = "1.6.0"
+description = "Tools for extracting AlphaFold metadata"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+authors = [{name = "Matt Arnold", email = "m.arnold.1@research.gla.ac.uk"}]
+dependencies = [
+    "biopython<2",
+    "matplotlib<4",
+    "numpy<2",
+    "pandas<3",
+    "scipy<2",
+    "joblib<2",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-xdist",
+]
+docs = [
+    "sphinx",
+    "furo",
+]
+
+[tool.flit.sdist]
+exclude = [
+  "**/__pycache__/**",
+  "**/*.pyc",
+  "**/*.pyo",
+  "**/.DS_Store"
+]
