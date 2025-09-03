@@ -43,11 +43,12 @@ class AlphaPickleRunner:
         """Batch process all ranking results in a directory."""
         directory = Path(directory)
         rankings = AlphaFoldJson(directory).ranking
-        def worker(item: tuple[int, str]) -> AlphaFoldPickle:
-            rank, model_name = item
-            path = directory / f"result_{model_name}.pkl"
-            return self.process_pickle(path, ranking=rank)
-        return Parallel(n_jobs=self.n_jobs)(delayed(worker)(item) for item in rankings)
+        return Parallel(n_jobs=self.n_jobs)(
+            delayed(self.process_pickle)(
+                directory / f"result_{model_name}.pkl", ranking=rank
+            )
+            for rank, model_name in rankings
+        )
 
     def process_pdb(self, pdb_file: str | Path) -> AlphaFoldPDB:
         """Extract and plot pLDDT values from a PDB file."""
